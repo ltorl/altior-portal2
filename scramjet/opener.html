@@ -59,7 +59,9 @@ self.addEventListener("fetch", (event) => {
                 return;
             }
 
-            const content = await fetch('https://raw.githubusercontent.com/ltorl/altior-portal2/refs/heads/main/scramjet/index.html').then(r => r.text());
+            // cache-bust so we always get the latest index.html, not a copy
+            // cached by GitHub's CDN / the browser HTTP cache (~5 min TTL).
+            const content = await fetch(`https://raw.githubusercontent.com/ltorl/altior-portal2/refs/heads/main/scramjet/index.html?_=${Date.now()}`, { cache: 'no-store' }).then(r => r.text());
 
             popupWin.document.open();
             popupWin.document.write(content);
