@@ -391,7 +391,7 @@ self.addEventListener("fetch", (event) => {
             }
 
             const connection = new BareMuxConnection('https://altior-portal2.onrender.com/baremux/worker.js');
-            const wispUrl = "${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}/wisp/";
+            const wispUrl = `${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}/wisp/`;
             const currentTransport = await connection.getTransport();
             if (currentTransport !== 'https://altior-portal2.onrender.com/libcurl/index.mjs') {
                 await connection.setTransport('https://altior-portal2.onrender.com/libcurl/index.mjs', [{ websocket: wispUrl }]);
