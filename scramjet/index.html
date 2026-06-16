@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Tab</title>
+    <link rel="icon" type="image/png" sizes="any" media="(prefers-color-scheme: light)"
+        href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAMAAAD04JH5AAAAZlBMVEUAAABAQEA4QEg4QEA6QEU6QEA8QEQ8QEA9QEM+QEM6QEI7QEQ7QEI8QEQ8QEI8QEQ8QEI9QEQ9QEI8QEM8QEI7QEM7QEM8QEM8QEM8QEQ8QEM9QEM9QEI7QEM7QEI8QEM8QEI8QEOBp9B1AAAAIXRSTlMAECAgMDBAQFBfYHBwf3+AgI+PkJCfoK+/z8/f39/f7+84OiXtAAAB70lEQVR42u3azU7jMBRA4SSeJmmHGX5MwEBLct//JTldWLIMsVNgYVf3W1WQKmdx1dhuG6WUusQAixfMEAFmOFgM0IDrCzjgDbLRCXtoQP0BHRzkm07ooAF1BuwxQ35oxggNqCtghPyyPTSgnoA3yC+b0UED6gi4gaxYcIsR5kItNKCOgDMHiVi0aH5AA8oOmOBf95DAXzSBFjsM+CpqSNCAMgP8DcMLniG4Q3jjB8yQwITwYWMhKwZoQHkBjxCc4IfK4BXhZjW1WPHv9aELBDELDSgvwEEQD90O/vUTJOMe/vpbCGKv0IDyAsKBmdEifvhIRvzeEWvXaEB5ARKZ8OlhtZEfXANZoQHlB8QLhz+QjQZoQH0BCyTi0CBaYGS1SA3uDA0oL+AFuUNmC8mYkFvAOGhAeQGP2LLZOEJWvMMgd+htoQHlBfTYstkwiIdrQXyI+Q+yYoAGlBXgpQbsBvFGpccO/sZeh9SgNtCAMgMOkIT/aJLyBxl7aEC5AWcOknDChAEGZx3CQ63cAGpA2QEGC+QCWxYhCww0oPyAS3/INGHLB9mIBhpQR4CPWCDIbURSX2gt8DfXgLoCzgyO2LK4eIBEHHygBtQZ4B1wxNriokP8vzBOA+oP8HpYOIwIDyMcLHr4v2vA9QUopa7SBwy1hh79c1UmAAAAAElFTkSuQmCC">
+    <link rel="icon" type="image/png" sizes="any" media="(prefers-color-scheme: dark)"
+        href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAMAAAD04JH5AAAAZlBMVEUAAAC/v7/Hv7/Hv7fFv7/Fv7rDv7/Dv7vCv7zBv7zFv73Ev73Ev7vDv73Dv7vDv73Dv7vCv73Cv7vDv73Dv7zEv7zEv7zDv7zDv7zDv7zDv7vEv73Ev7zCv73Cv7zDv73Dv7zDv7xno0nKAAAAIXRSTlMAECAgMDBAQFBfYHBwf3+AgI+PkJCfoK+/z8/f39/f7+84OiXtAAAB70lEQVR42u3azU7jMBRA4cTpJGmZGf4cMNCS3Pd/SU4XlixD7BRY2NX9VhWkyllcNbbbRimlLtHD4hULRIAFDhY9NOD6Ag54h2x0xB4aUH9ABwf5piM6aECdAXsskB9aMEID6goYIb9sDw2oJ+Ad8ssWdNCAOgJuICtm3GGEuVALDagj4MxBIhYtmh/QgLIDJvjXAyTwF02gxQ49vorqEzSgzAB/w/CCZwhuEd74HgskMCF82FjIih4aUF7AIwRH+KEyeEG4WU0tVvx7fegMQcxCA8oLcBDEQ7eDf/0EyXiAv/4OgtgLNKC8gHBgFrSIHz6SEb93xNo1GlBegEQmfHpYbeQH10BWaED5AfHC4Q9kox4aUF/ADIk4NIgWGFktUoO7QAPKC3hF7pDZQjIm5BYwDhpQXsAjtmw2TpAVbzDIHXpbaEB5AQO2bDYM4uGaER9i/oes6KEBZQV4qQG7QbxRGbCDv7HXITWoDTSgzIADJOEfmqT8QcYeGlBuwJmDJBwxoYfBWYfwUCs3gBpQdoDBDLnAlkXIDAMNKD/g0h8yTdjyQTaigQbUEeAjZghyG5HUF1oz/M01oK6AM4MTtiwu7iERBx+oAXUGeAecsLa46BD/L4zTgPoDvAEWDiPCwwgHiwH+7xpwfQFKqav0AXlzhL6TK7MLAAAAAElFTkSuQmCC">
+    <style>
+        :root {
+            --glow-color: rgba(0, 195, 255, 0.6);
+            --accent-color: #45a29e;
+            --accent-glow: #66fcf1;
+            --bg-dark: #0b0c10;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #0b0c10 0%, #1f2833 100%);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        #search-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            z-index: 10;
+        }
+
+        #search-container.active-mode {
+            top: 0;
+            transform: translate(-50%, 0);
+            padding: 15px 0;
+            flex-direction: row;
+            justify-content: space-between;
+            background: rgba(11, 12, 16, 0.7);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+            gap: 0;
+        }
+
+        .title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px var(--glow-color);
+            margin: 0;
+            transition: all 0.6s ease;
+            cursor: default;
+        }
+
+        #search-container.active-mode .title {
+            font-size: 1.5rem;
+            margin-left: 30px;
+            text-shadow: 0 0 10px rgba(69, 162, 158, 0.5);
+            color: var(--accent-glow);
+        }
+
+        .input-group {
+            display: flex;
+            width: 90%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .input-group:focus-within {
+            border-color: rgba(0, 195, 255, 0.4);
+            box-shadow: 0 0 25px rgba(0, 195, 255, 0.15);
+        }
+
+        #search-container.active-mode .input-group {
+            width: 50%;
+            margin-right: 30px;
+            max-width: 800px;
+            padding: 4px;
+        }
+
+        #url-input {
+            flex-grow: 1;
+            padding: 14px 20px;
+            border: none;
+            background: transparent;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+        }
+
+        #url-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        button {
+            padding: 12px 28px;
+            cursor: pointer;
+            border-radius: 8px;
+            border: none;
+            background: var(--accent-color);
+            color: #0b0c10;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: var(--accent-glow);
+            box-shadow: 0 0 25px rgba(102, 252, 241, 0.5);
+            transform: scale(1.02);
+        }
+
+        .quick-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .quick-link {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(5px);
+            padding: 16px 18px;
+            border-radius: 40px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            text-align: center;
+            display: block;
+            width: 220px;
+        }
+
+        .quick-link:hover {
+            background: var(--accent-color);
+            color: #0b0c10;
+            transform: translateY(-2px);
+            border-color: var(--accent-glow);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .saved-link {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(5px);
+            padding: 16px 18px;
+            border-radius: 40px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            text-align: center;
+            display: block;
+            width: 190px;
+        }
+
+        .saved-link:hover {
+            background: var(--accent-color);
+            color: #0b0c10;
+            transform: translateY(-2px);
+            border-color: var(--accent-glow);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: none;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 860px) {
+            .games-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 540px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .saved-site-item {
+            position: relative;
+            padding-right: 45px !important;
+        }
+
+        .delete-saved {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #703232;
+            border-radius: 4px;
+            padding: 2px 6px;
+            color: white;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            height: 20px;
+        }
+
+        .delete-saved:hover {
+            background: #aa0000;
+            transform: translateY(-50%) scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="search-container">
+        <h1 class="title">Altior Portal</h1>
+        <div class="input-group">
+            <input type="text" id="url-input" placeholder="Search with DuckDuckGo or enter URL..." autocomplete="off"
+                spellcheck="false">
+            <button id="save-site-btn" style="background: #6c757d; margin-right: 8px;">Save</button>
+            <button id="go-btn">Go</button>
+        </div>
+        <div id="error-message" class="error-message"></div>
+        <h2>
+            Games sites:
+        </h2>
+        <div class="games-grid">
+            <div class="quick-link" data-url="https://lite.3kh0.net/">3kh0 (Echo) Games</div>
+            <div class="quick-link" data-url="https://theooofficial.github.io/myRETROGAMES/">RETRO GAMES</div>
+            <div class="quick-link" data-url="https://bidoofery.github.io/gfiles/list.html">Bin Bash Games</div>
+            <div class="quick-link" data-url="https://bidoofery.github.io/nativegames/">Native Games</div>
+            <div class="quick-link" data-url="https://bidoofery.github.io/gam3b0y/">GAMEBOY Advance Games</div>
+            <div class="quick-link" data-url="https://gba.js.org/">GBA Online Games</div>
+            <div class="quick-link" data-url="https://outred.org/games.html">OutRed Games</div>
+            <div class="quick-link" data-url="https://theclashman2.github.io/GBA-Emulator/">GBA Emulator Games</div>
+            <div class="quick-link" data-url="https://sites.google.com/site/thegamecompilation/home?authuser=0">
+                Unblocked Games World</div>
+            <div class="quick-link" data-url="https://now.gg/">Now.gg Games</div>
+            <div class="quick-link"
+                data-url="https://docs.google.com/forms/d/e/1FAIpQLSfuc1-5vRl31wIZtfgLqZccgm6guUXWFEq6WBYexGNYT3quuQ/viewform?usp=header"
+                style="background: #312e35;">request game site</div>
+
+        </div>
+        <div id="saved-section" hidden>
+            <h2>Saved Sites:</h2>
+            <div id="saved-grid" class="games-grid"></div>
+        </div>
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "@mercuryworkshop/bare-mux": "https://altior-portal.onrender.com/baremux/index.mjs"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import { BareMuxConnection } from '@mercuryworkshop/bare-mux';
+        import 'https://altior-portal.onrender.com/scram/scramjet.all.js';
+
+        const input = document.getElementById('url-input');
+        const button = document.getElementById('go-btn');
+        const errorDiv = document.getElementById('error-message');
+
+        let scramjet = null;
+        let isScramjetReady = false;
+
+        async function initScramjet() {
+            try {
+                const { ScramjetController } = $scramjetLoadController();
+                scramjet = new ScramjetController({
+                    files: {
+                        wasm: 'https://altior-portal.onrender.com/scram/scramjet.wasm.wasm',
+                        all: 'https://altior-portal.onrender.com/scram/scramjet.all.js',
+                        sync: 'https://altior-portal.onrender.com/scram/scramjet.sync.js',
+                    }
+                });
+                await scramjet.init();
+                isScramjetReady = true;
+                console.log('Scramjet initialized');
+            } catch (err) {
+                console.error('Scramjet init failed:', err);
+                errorDiv.textContent = 'Failed to initialize proxy engine.';
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        const swCode = `
+importScripts("https://altior-portal.onrender.com/scram/scramjet.all.js");
+
+const { ScramjetServiceWorker } = $scramjetLoadWorker();
+const scramjet = new ScramjetServiceWorker();
+
+async function handleRequest(event) {
+    await scramjet.loadConfig();
+    if (scramjet.route(event)) {
+        return scramjet.fetch(event);
+    }
+    return fetch(event.request);
+}
+
+self.addEventListener("fetch", (event) => {
+    event.respondWith(handleRequest(event));
+});
+`;
+
+        async function waitForServiceWorker() {
+            if (!('serviceWorker' in navigator)) return;
+            const registration = await navigator.serviceWorker.register(`/get-dynamic-sw.js?code=${encodeURIComponent(swCode)}`);
+            if (registration.active) return;
+            if (registration.waiting) {
+                registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+            }
+            await new Promise(resolve => {
+                const check = () => {
+                    if (registration.active) resolve();
+                    else setTimeout(check, 100);
+                };
+                check();
+            });
+            console.log('Service Worker active');
+        }
+
+        function normalizeUrl(query) {
+            query = query.trim();
+            if (!query) return null;
+            const isUrl = query.includes('.') && !query.includes(' ');
+            if (!isUrl) {
+                return 'https://duckduckgo.com/?q=${encodeURIComponent(query)}';
+            }
+            if (!query.startsWith('http://') && !query.startsWith('https://')) {
+                return 'https://' + query;
+            }
+            return query;
+        }
+
+        async function navigate(query) {
+            const url = normalizeUrl(query);
+            if (!url) return;
+
+            errorDiv.style.display = 'none';
+
+            if (!isScramjetReady) {
+                errorDiv.textContent = 'Proxy engine is still loading, please wait.';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            try {
+                await waitForServiceWorker();
+            } catch (err) {
+                errorDiv.textContent = 'Service Worker activation failed: ' + err.message;
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            const connection = new BareMuxConnection('https://altior-portal.onrender.com/baremux/worker.js');
+            const wispUrl = "${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}/wisp/";
+            const currentTransport = await connection.getTransport();
+            if (currentTransport !== 'https://altior-portal.onrender.com/libcurl/index.mjs') {
+                await connection.setTransport('https://altior-portal.onrender.com/libcurl/index.mjs', [{ websocket: wispUrl }]);
+                console.log('Transport set to libcurl with wisp:', wispUrl);
+            }
+
+            const popupWin = window.open('about:blank', '_blank');
+            if (!popupWin) {
+                errorDiv.textContent = 'Popup blocked! Please allow popups for this site.';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            const popupHtml = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>New Tab</title>
+            <link rel="icon" type="image/png" sizes="any" media="(prefers-color-scheme: light)"
+                href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAMAAAD04JH5AAAAZlBMVEUAAABAQEA4QEg4QEA6QEU6QEA8QEQ8QEA9QEM+QEM6QEI7QEQ7QEI8QEQ8QEI8QEQ8QEI9QEQ9QEI8QEM8QEI7QEM7QEM8QEM8QEM8QEQ8QEM9QEM9QEI7QEM7QEI8QEM8QEI8QEOBp9B1AAAAIXRSTlMAECAgMDBAQFBfYHBwf3+AgI+PkJCfoK+/z8/f39/f7+84OiXtAAAB70lEQVR42u3azU7jMBRA4SSeJmmHGX5MwEBLct//JTldWLIMsVNgYVf3W1WQKmdx1dhuG6WUusQAixfMEAFmOFgM0IDrCzjgDbLRCXtoQP0BHRzkm07ooAF1BuwxQ35oxggNqCtghPyyPTSgnoA3yC+b0UED6gi4gaxYcIsR5kItNKCOgDMHiVi0aH5AA8oOmOBf95DAXzSBFjsM+CpqSNCAMgP8DcMLniG4Q3jjB8yQwITwYWMhKwZoQHkBjxCc4IfK4BXhZjW1WPHv9aELBDELDSgvwEEQD90O/vUTJOMe/vpbCGKv0IDyAsKBmdEifvhIRvzeEWvXaEB5ARKZ8OlhtZEfXANZoQHlB8QLhz+QjQZoQH0BCyTi0CBaYGS1SA3uDA0oL+AFuUNmC8mYkFvAOGhAeQGP2LLZOEJWvMMgd+htoQHlBfTYstkwiIdrQXyI+Q+yYoAGlBXgpQbsBvFGpccO/sZeh9SgNtCAMgMOkIT/aJLyBxl7aEC5AWcOknDChAEGZx3CQ63cAGpA2QEGC+QCWxYhCww0oPyAS3/INGHLB9mIBhpQR4CPWCDIbURSX2gt8DfXgLoCzgyO2LK4eIBEHHygBtQZ4B1wxNriokP8vzBOA+oP8HpYOIwIDyMcLHr4v2vA9QUopa7SBwy1hh79c1UmAAAAAElFTkSuQmCC">
+            <link rel="icon" type="image/png" sizes="any" media="(prefers-color-scheme: dark)"
+                href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAMAAAD04JH5AAAAZlBMVEUAAAC/v7/Hv7/Hv7fFv7/Fv7rDv7/Dv7vCv7zBv7zFv73Ev73Ev7vDv73Dv7vDv73Dv7vCv73Cv7vDv73Dv7zEv7zEv7zDv7zDv7zDv7zDv7vEv73Ev7zCv73Cv7zDv73Dv7zDv7xno0nKAAAAIXRSTlMAECAgMDBAQFBfYHBwf3+AgI+PkJCfoK+/z8/f39/f7+84OiXtAAAB70lEQVR42u3azU7jMBRA4cTpJGmZGf4cMNCS3Pd/SU4XlixD7BRY2NX9VhWkyllcNbbbRimlLtHD4hULRIAFDhY9NOD6Ag54h2x0xB4aUH9ABwf5piM6aECdAXsskB9aMEID6goYIb9sDw2oJ+Ad8ssWdNCAOgJuICtm3GGEuVALDagj4MxBIhYtmh/QgLIDJvjXAyTwF02gxQ49vorqEzSgzAB/w/CCZwhuEd74HgskMCF82FjIih4aUF7AIwRH+KEyeEG4WU0tVvx7fegMQcxCA8oLcBDEQ7eDf/0EyXiAv/4OgtgLNKC8gHBgFrSIHz6SEb93xNo1GlBegEQmfHpYbeQH10BWaED5AfHC4Q9kox4aUF/ADIk4NIgWGFktUoO7QAPKC3hF7pDZQjIm5BYwDhpQXsAjtmw2TpAVbzDIHXpbaEB5AQO2bDYM4uGaER9i/oes6KEBZQV4qQG7QbxRGbCDv7HXITWoDTSgzIADJOEfmqT8QcYeGlBuwJmDJBwxoYfBWYfwUCs3gBpQdoDBDLnAlkXIDAMNKD/g0h8yTdjyQTaigQbUEeAjZghyG5HUF1oz/M01oK6AM4MTtiwu7iERBx+oAXUGeAecsLa46BD/L4zTgPoDvAEWDiPCwwgHiwH+7xpwfQFKqav0AXlzhL6TK7MLAAAAAElFTkSuQmCC">
+            <style>
+                * { margin: 0; padding: 0; box-sizing: border-box; }
+                body { overflow: hidden; height: 100vh; width: 100vw; }
+                iframe { width: 100%; height: 100%; border: none; }
+            </style>
+        </head>
+        <body>
+            <script type="importmap">
+                {
+                    "imports": {
+                        "@mercuryworkshop/bare-mux": "https://altior-portal.onrender.com/baremux/index.mjs"
+                    }
+                }
+            <\/script>
+            <script type="module">
+                import { BareMuxConnection } from '@mercuryworkshop/bare-mux';
+                window.addEventListener('load', async () => {
+                    try {
+                        await import('https://altior-portal.onrender.com/scram/scramjet.all.js');
+                        const { ScramjetController } = $scramjetLoadController();
+                        const scramjet = new ScramjetController({
+                            files: {
+                                wasm: 'https://altior-portal.onrender.com/scram/scramjet.wasm.wasm',
+                                all: 'https://altior-portal.onrender.com/scram/scramjet.all.js',
+                                sync: 'https://altior-portal.onrender.com/scram/scramjet.sync.js',
+                            }
+                        });
+                        await scramjet.init();
+                        await new Promise(r => setTimeout(r, 50));
+                        const connection = new BareMuxConnection('https://altior-portal.onrender.com/baremux/worker.js');
+                        const wispUrl = '${wispUrl}';
+                        const currentTransport = await connection.getTransport();
+                        if (currentTransport !== 'https://altior-portal.onrender.com/libcurl/index.mjs') {
+                            await connection.setTransport('https://altior-portal.onrender.com/libcurl/index.mjs', [{ websocket: wispUrl }]);
+                        }
+                        const frameObj = scramjet.createFrame();
+                        const frame = frameObj.frame;
+                        frame.style.width = '100%';
+                        frame.style.height = '100%';
+                        frame.style.border = 'none';
+                        document.body.appendChild(frame);
+                        frameObj.go('${url.replace(/'/g, "\\'")}');
+                    } catch (err) {
+                        console.error('Popup Scramjet init error:', err);
+                    }
+                });
+            <\/script>
+        </body>
+        </html>
+    `;
+
+            popupWin.document.open();
+            popupWin.document.write(popupHtml);
+            popupWin.document.close();
+
+            input.value = '';
+        }
+
+        button.addEventListener('click', () => navigate(input.value));
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') navigate(input.value);
+        });
+
+        window.navigate = navigate;
+
+        let savedSites = [];
+
+        function loadSavedSites() {
+            const stored = localStorage.getItem('altior_saved_sites');
+            if (stored) {
+                try {
+                    savedSites = JSON.parse(stored);
+                    renderSavedSites();
+                } catch (e) {
+                    console.error('Failed to load saved sites:', e);
+                }
+            }
+        }
+
+        function renderSavedSites() {
+            const savedGrid = document.getElementById('saved-grid');
+            const savedSection = document.getElementById('saved-section');
+            if (!savedGrid || !savedSection) return;
+
+            if (savedSites.length === 0) {
+                savedSection.hidden = true;
+            } else {
+                savedSection.hidden = false;
+                savedGrid.innerHTML = savedSites.map((site, index) => `
+            <div class="saved-link saved-site-item" data-url="${escapeHtml(site.url)}" data-index="${index}">
+                ${escapeHtml(site.title || site.url)}
+                <span class="delete-saved" data-index="${index}">✖</span>
+            </div>
+        `).join('');
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        async function fetchPageTitle(url) {
+            try {
+                const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+                const response = await fetch(proxyUrl);
+                const data = await response.json();
+
+                if (data && data.contents) {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(data.contents, 'text/html');
+                    const title = doc.querySelector('title');
+                    if (title && title.textContent) {
+                        try {
+                            const pageTitle = title.textContent.replace(' at DuckDuckGo', ' - Search').trim();
+                            return pageTitle;
+                        } catch (error) {
+                            return title.textContent.trim();
+                        }
+                    }
+                }
+                try {
+                    const urlObj = new URL(url);
+                    urlObj = urlObj.hostname.replace('https://', '');
+                    return urlObj.hostname.replace('www.', '');
+                } catch (e) {
+                    return 'Saved Site';
+                }
+            } catch (error) {
+                console.error('Error fetching title:', error);
+                try {
+                    const urlObj = new URL(url);
+                    return urlObj.hostname.replace('www.', '');
+                } catch (e) {
+                    return 'Saved Site';
+                }
+            }
+        }
+
+        async function saveCurrentSite() {
+            const urlInput = document.getElementById('url-input');
+            const errorDiv = document.getElementById('error-message');
+            const saveBtn = document.getElementById('save-site-btn');
+
+            let url = urlInput.value.trim();
+
+            if (!url) {
+                errorDiv.textContent = 'Please enter a URL to save';
+                errorDiv.style.display = 'block';
+                setTimeout(() => { errorDiv.style.display = 'none'; }, 3000);
+                return;
+            }
+
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://duckduckgo.com/?q=' + url;
+            }
+
+            try {
+                new URL(url);
+            } catch (e) {
+                errorDiv.textContent = 'Please enter a valid URL';
+                errorDiv.style.display = 'block';
+                setTimeout(() => { errorDiv.style.display = 'none'; }, 3000);
+                return;
+            }
+
+            if (savedSites.some(site => site.url === url)) {
+                errorDiv.textContent = 'This site is already saved!';
+                errorDiv.style.display = 'block';
+                setTimeout(() => { errorDiv.style.display = 'none'; }, 3000);
+                return;
+            }
+
+            const originalBtnText = saveBtn.textContent;
+            saveBtn.textContent = 'Loading...';
+            saveBtn.disabled = true;
+            errorDiv.style.display = 'none';
+
+            try {
+                const title = await fetchPageTitle(url);
+                savedSites.push({ url, title });
+                localStorage.setItem('altior_saved_sites', JSON.stringify(savedSites));
+                renderSavedSites();
+            } catch (error) {
+                errorDiv.textContent = 'Failed to save site. Please try again.';
+                errorDiv.style.display = 'block';
+                setTimeout(() => { errorDiv.style.display = 'none'; }, 3000);
+            } finally {
+                saveBtn.textContent = originalBtnText;
+                saveBtn.disabled = false;
+            }
+        }
+
+        function setupDelegatedEvents() {
+            const container = document.getElementById('search-container');
+            if (!container) return;
+
+            container.addEventListener('click', (e) => {
+                const deleteBtn = e.target.closest('.delete-saved');
+                if (deleteBtn) {
+                    e.stopPropagation();
+                    const index = deleteBtn.getAttribute('data-index');
+                    if (index !== null) {
+                        savedSites.splice(parseInt(index), 1);
+                        localStorage.setItem('altior_saved_sites', JSON.stringify(savedSites));
+                        renderSavedSites();
+                    }
+                    return;
+                }
+
+                const link = e.target.closest('.quick-link, .saved-link');
+                if (link) {
+                    const url = link.getAttribute('data-url');
+                    if (url) navigate(url);
+                }
+            });
+        }
+
+        const style = document.createElement('style');
+        style.textContent = `
+            #save-site-btn:hover {
+                background: #5a6268 !important;
+                box-shadow: 0 0 15px rgba(108, 117, 125, 0.5);
+                transform: scale(1.02);
+            }
+            #save-site-btn:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+            .saved-link {
+                cursor: pointer;
+            }
+        `;
+        document.head.appendChild(style);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSavedSites();
+            setupDelegatedEvents();
+
+            const saveBtn = document.getElementById('save-site-btn');
+            if (saveBtn) {
+                saveBtn.addEventListener('click', saveCurrentSite);
+            }
+
+            const urlInput = document.getElementById('url-input');
+            if (urlInput) {
+                urlInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        const goBtn = document.getElementById('go-btn');
+                        if (goBtn) goBtn.click();
+                    }
+                });
+            }
+        });
+
+        initScramjet();
+    </script>
+</body>
+
+</html>
