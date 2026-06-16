@@ -44,6 +44,9 @@ self.addEventListener("fetch", (event) => {
             if ('serviceWorker' in navigator) {
                 try {
                     await navigator.serviceWorker.register(`/get-dynamic-sw.js?code=${encodeURIComponent(swCode)}`);
+                    // Wait until the SW is actually active before opening the
+                    // popup, so the first scramjet frame load is intercepted.
+                    await navigator.serviceWorker.ready;
                 } catch (err) {
                     console.error('Service Worker registration failed:', err);
                 }

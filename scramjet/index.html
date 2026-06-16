@@ -342,30 +342,30 @@ self.addEventListener("fetch", (event) => {
 
         async function waitForServiceWorker() {
             if (!('serviceWorker' in navigator)) return;
-            let registration;
             try {
-                registration = await navigator.serviceWorker.register(`/get-dynamic-sw.js?code=${encodeURIComponent(swCode)}`);
+                const registration = await navigator.serviceWorker.register(`/get-dynamic-sw.js?code=${encodeURIComponent(swCode)}`);
+                if (registration.active) return;
+                if (registration.waiting) {
+                    registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                }
+                await new Promise(resolve => {
+                    const check = () => {
+                        if (registration.active) resolve();
+                        else setTimeout(check, 100);
+                    };
+                    check();
+                });
+                console.log('Service Worker active');
             } catch (err) {
-                // about:blank documents can't register a service worker
-                // ("document is in an invalid state"). When this page is opened
-                // inside an about:blank window by opener.html, the opener (on the
-                // real origin) has already registered it — reuse that one, which
-                // this window inherits along with the origin and base URL.
-                registration = await navigator.serviceWorker.getRegistration();
-                if (!registration) throw err;
+                // about:blank documents can't call ANY service worker method
+                // ("document is in an invalid state") — not register, not
+                // getRegistration. When this page is opened inside an about:blank
+                // window by opener.html, the opener (on the real origin) has
+                // already registered the SW, and the scramjet frames load real
+                // https URLs (/scramjet/...) under that origin's SW scope, so they
+                // are controlled regardless. Just proceed.
+                console.warn('Skipping SW registration (running under about:blank?):', err);
             }
-            if (registration.active) return;
-            if (registration.waiting) {
-                registration.waiting.postMessage({ type: 'SKIP_WAITING' });
-            }
-            await new Promise(resolve => {
-                const check = () => {
-                    if (registration.active) resolve();
-                    else setTimeout(check, 100);
-                };
-                check();
-            });
-            console.log('Service Worker active');
         }
 
         function normalizeUrl(query) {
