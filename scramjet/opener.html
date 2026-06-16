@@ -10,7 +10,7 @@
     <button id="open-portal-btn" style='width: 100%; height: 100%'>Open Portal</button>
 
     <script>
-        document.getElementById('open-portal-btn').addEventListener('click', async () => {
+        document.getElementById('open-portal-btn').addEventListener('click', () => {
             const popupWin = window.open('about:blank', '_blank');
 
             if (!popupWin) {
@@ -18,10 +18,31 @@
                 return;
             }
 
-            const content = await fetch('https://raw.githubusercontent.com/ltorl/altior-portal2/refs/heads/main/scramjet/index.html').then(r => r.text());
+            // Keep the top window as about:blank (cloaked URL bar), but load the
+            // real portal inside an iframe with a true HTTPS origin so its
+            // service worker can register. about:blank documents cannot register
+            // a service worker ("document is in an invalid state"), and neither
+            // can srcdoc iframes (opaque origin) — a real src is required.
+            const html = `<!DOCTYPE html>
+<html>
+<head>
+    <title>New Tab</title>
+    <link rel="icon" type="image/png" sizes="any" media="(prefers-color-scheme: light)"
+        href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAMAAAD04JH5AAAAZlBMVEUAAABAQEA4QEg4QEA6QEU6QEA8QEQ8QEA9QEM+QEM6QEI7QEQ7QEI8QEQ8QEI8QEQ8QEI9QEQ9QEI8QEM8QEI7QEM7QEM8QEM8QEM8QEQ8QEM9QEM9QEI7QEM7QEI8QEM8QEI8QEOBp9B1AAAAIXRSTlMAECAgMDBAQFBfYHBwf3+AgI+PkJCfoK+/z8/f39/f7+84OiXtAAAB70lEQVR42u3azU7jMBRA4SSeJmmHGX5MwEBLct//JTldWLIMsVNgYVf3W1WQKmdx1dhuG6WUusQAixfMEAFmOFgM0IDrCzjgDbLRCXtoQP0BHRzkm07ooAF1BuwxQ35oxggNqCtghPyyPTSgnoA3yC+b0UED6gi4gaxYcIsR5kItNKCOgDMHiVi0aH5AA8oOmOBf95DAXzSBFjsM+CpqSNCAMgP8DcMLniG4Q3jjB8yQwITwYWMhKwZoQHkBjxCc4IfK4BXhZjW1WPHv9aELBDELDSgvwEEQD90O/vUTJOMe/vpbCGKv0IDyAsKBmdEifvhIRvzeEWvXaEB5ARKZ8OlhtZEfXANZoQHlB8QLhz+QjQZoQH0BCyTi0CBaYGS1SA3uDA0oL+AFuUNmC8mYkFvAOGhAeQGP2LLZOEJWvMMgd+htoQHlBfTYstkwiIdrQXyI+Q+yYoAGlBXgpQbsBvFGpccO/sZeh9SgNtCAMgMOkIT/aJLyBxl7aEC5AWcOknDChAEGZx3CQ63cAGpA2QEGC+QCWxYhCww0oPyAS3/INGHLB9mIBhpQR4CPWCDIbURSX2gt8DfXgLoCzgyO2LK4eIBEHHygBtQZ4B1wxNriokP8vzBOA+oP8HpYOIwIDyMcLHr4v2vA9QUopa7SBwy1hh79c1UmAAAAAElFTkSuQmCC">
+    <link rel="icon" type="image/png" sizes="any" media="(prefers-color-scheme: dark)"
+        href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAMAAAD04JH5AAAAZlBMVEUAAAC/v7/Hv7/Hv7fFv7/Fv7rDv7/Dv7vCv7zBv7zFv73Ev73Ev7vDv73Dv7vDv73Dv7vCv73Cv7vDv73Dv7zEv7zEv7zDv7zDv7zDv7zDv7vEv73Ev7zCv73Cv7zDv73Dv7zDv7xno0nKAAAAIXRSTlMAECAgMDBAQFBfYHBwf3+AgI+PkJCfoK+/z8/f39/f7+84OiXtAAAB70lEQVR42u3azU7jMBRA4cTpJGmZGf4cMNCS3Pd/SU4XlixD7BRY2NX9VhWkyllcNbbbRimlLtHD4hULRIAFDhY9NOD6Ag54h2x0xB4aUH9ABwf5piM6aECdAXsskB9aMEID6goYIb9sDw2oJ+Ad8ssWdNCAOgJuICtm3GGEuVALDagj4MxBIhYtmh/QgLIDJvjXAyTwF02gxQ49vorqEzSgzAB/w/CCZwhuEd74HgskMCF82FjIih4aUF7AIwRH+KEyeEG4WU0tVvx7fegMQcxCA8oLcBDEQ7eDf/0EyXiAv/4OgtgLNKC8gHBgFrSIHz6SEb93xNo1GlBegEQmfHpYbeQH10BWaED5AfHC4Q9kox4aUF/ADIk4NIgWGFktUoO7QAPKC3hF7pDZQjIm5BYwDhpQXsAjtmw2TpAVbzDIHXpbaEB5AQO2bDYM4uGaER9i/oes6KEBZQV4qQG7QbxRGbCDv7HXITWoDTSgzIADJOEfmqT8QcYeGlBuwJmDJBwxoYfBWYfwUCs3gBpQdoDBDLnAlkXIDAMNKD/g0h8yTdjyQTaigQbUEeAjZghyG5HUF1oz/M01oK6AM4MTtiwu7iERBx+oAXUGeAecsLa46BD/L4zTgPoDvAEWDiPCwwgHiwH+7xpwfQFKqav0AXlzhL6TK7MLAAAAAElFTkSuQmCC">
+    <style>
+        html, body { margin: 0; padding: 0; height: 100%; }
+        iframe { border: none; width: 100%; height: 100vh; display: block; }
+    </style>
+</head>
+<body>
+    <iframe src="https://altior-portal2.onrender.com/"></iframe>
+</body>
+</html>`;
 
             popupWin.document.open();
-            popupWin.document.write(content);
+            popupWin.document.write(html);
             popupWin.document.close();
         });
     </script>
