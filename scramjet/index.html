@@ -285,14 +285,14 @@
     <script type="importmap">
         {
             "imports": {
-                "@mercuryworkshop/bare-mux": "https://altior-portal.onrender.com/baremux/index.mjs"
+                "@mercuryworkshop/bare-mux": "https://altior-portal2.onrender.com/baremux/index.mjs"
             }
         }
     </script>
 
     <script type="module">
         import { BareMuxConnection } from '@mercuryworkshop/bare-mux';
-        import 'https://altior-portal.onrender.com/scram/scramjet.all.js';
+        import 'https://altior-portal2.onrender.com/scram/scramjet.all.js';
 
         const input = document.getElementById('url-input');
         const button = document.getElementById('go-btn');
@@ -306,9 +306,9 @@
                 const { ScramjetController } = $scramjetLoadController();
                 scramjet = new ScramjetController({
                     files: {
-                        wasm: 'https://altior-portal.onrender.com/scram/scramjet.wasm.wasm',
-                        all: 'https://altior-portal.onrender.com/scram/scramjet.all.js',
-                        sync: 'https://altior-portal.onrender.com/scram/scramjet.sync.js',
+                        wasm: 'https://altior-portal2.onrender.com/scram/scramjet.wasm.wasm',
+                        all: 'https://altior-portal2.onrender.com/scram/scramjet.all.js',
+                        sync: 'https://altior-portal2.onrender.com/scram/scramjet.sync.js',
                     }
                 });
                 await scramjet.init();
@@ -322,7 +322,7 @@
         }
 
         const swCode = `
-importScripts("https://altior-portal.onrender.com/scram/scramjet.all.js");
+importScripts("https://altior-portal2.onrender.com/scram/scramjet.all.js");
 
 const { ScramjetServiceWorker } = $scramjetLoadWorker();
 const scramjet = new ScramjetServiceWorker();
@@ -390,11 +390,11 @@ self.addEventListener("fetch", (event) => {
                 return;
             }
 
-            const connection = new BareMuxConnection('https://altior-portal.onrender.com/baremux/worker.js');
+            const connection = new BareMuxConnection('https://altior-portal2.onrender.com/baremux/worker.js');
             const wispUrl = "${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}/wisp/";
             const currentTransport = await connection.getTransport();
-            if (currentTransport !== 'https://altior-portal.onrender.com/libcurl/index.mjs') {
-                await connection.setTransport('https://altior-portal.onrender.com/libcurl/index.mjs', [{ websocket: wispUrl }]);
+            if (currentTransport !== 'https://altior-portal2.onrender.com/libcurl/index.mjs') {
+                await connection.setTransport('https://altior-portal2.onrender.com/libcurl/index.mjs', [{ websocket: wispUrl }]);
                 console.log('Transport set to libcurl with wisp:', wispUrl);
             }
 
@@ -425,7 +425,7 @@ self.addEventListener("fetch", (event) => {
             <script type="importmap">
                 {
                     "imports": {
-                        "@mercuryworkshop/bare-mux": "https://altior-portal.onrender.com/baremux/index.mjs"
+                        "@mercuryworkshop/bare-mux": "https://altior-portal2.onrender.com/baremux/index.mjs"
                     }
                 }
             <\/script>
@@ -433,22 +433,22 @@ self.addEventListener("fetch", (event) => {
                 import { BareMuxConnection } from '@mercuryworkshop/bare-mux';
                 window.addEventListener('load', async () => {
                     try {
-                        await import('https://altior-portal.onrender.com/scram/scramjet.all.js');
+                        await import('https://altior-portal2.onrender.com/scram/scramjet.all.js');
                         const { ScramjetController } = $scramjetLoadController();
                         const scramjet = new ScramjetController({
                             files: {
-                                wasm: 'https://altior-portal.onrender.com/scram/scramjet.wasm.wasm',
-                                all: 'https://altior-portal.onrender.com/scram/scramjet.all.js',
-                                sync: 'https://altior-portal.onrender.com/scram/scramjet.sync.js',
+                                wasm: 'https://altior-portal2.onrender.com/scram/scramjet.wasm.wasm',
+                                all: 'https://altior-portal2.onrender.com/scram/scramjet.all.js',
+                                sync: 'https://altior-portal2.onrender.com/scram/scramjet.sync.js',
                             }
                         });
                         await scramjet.init();
                         await new Promise(r => setTimeout(r, 50));
-                        const connection = new BareMuxConnection('https://altior-portal.onrender.com/baremux/worker.js');
+                        const connection = new BareMuxConnection('https://altior-portal2.onrender.com/baremux/worker.js');
                         const wispUrl = '${wispUrl}';
                         const currentTransport = await connection.getTransport();
-                        if (currentTransport !== 'https://altior-portal.onrender.com/libcurl/index.mjs') {
-                            await connection.setTransport('https://altior-portal.onrender.com/libcurl/index.mjs', [{ websocket: wispUrl }]);
+                        if (currentTransport !== 'https://altior-portal2.onrender.com/libcurl/index.mjs') {
+                            await connection.setTransport('https://altior-portal2.onrender.com/libcurl/index.mjs', [{ websocket: wispUrl }]);
                         }
                         const frameObj = scramjet.createFrame();
                         const frame = frameObj.frame;
