@@ -342,7 +342,18 @@ self.addEventListener("fetch", (event) => {
 
         async function waitForServiceWorker() {
             if (!('serviceWorker' in navigator)) return;
-            const registration = await navigator.serviceWorker.register(`/get-dynamic-sw.js?code=${encodeURIComponent(swCode)}`);
+            let registration;
+            try {
+                registration = await navigator.serviceWorker.register(`/get-dynamic-sw.js?code=${encodeURIComponent(swCode)}`);
+            } catch (err) {
+                // about:blank documents can't register a service worker
+                // ("document is in an invalid state"). When this page is opened
+                // inside an about:blank window by opener.html, the opener (on the
+                // real origin) has already registered it — reuse that one, which
+                // this window inherits along with the origin and base URL.
+                registration = await navigator.serviceWorker.getRegistration();
+                if (!registration) throw err;
+            }
             if (registration.active) return;
             if (registration.waiting) {
                 registration.waiting.postMessage({ type: 'SKIP_WAITING' });
