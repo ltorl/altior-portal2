@@ -2,66 +2,46 @@
 <html>
 <head>
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; }
+        html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+        iframe { border: 0; width: 100%; height: 100%; display: block; }
     </style>
 </head>
 <body>
 
-    <button id="open-portal-btn" style='width: 100%; height: 100%'>Open Portal</button>
+    <!--
+        CROSS-ORIGIN opener. May be hosted on ANY origin (a different domain,
+        a local file, a school site, etc.). It is NOT served from the render
+        origin.
 
-    <script>
-        // Service worker code, served back via the /get-dynamic-sw.js loopback.
-        // Kept identical to the block in index.html.
-        const swCode = `
-importScripts("https://altior-portal2.onrender.com/scram/scramjet.all.js");
+        Why it still uses raw HTML and not a portal-in-an-iframe:
 
-const { ScramjetServiceWorker } = $scramjetLoadWorker();
-const scramjet = new ScramjetServiceWorker();
+          A service worker can only be registered by a document that is
+          same-origin with the SW script. Scramjet cannot proxy anything
+          without that SW. So the registration MUST happen on
+          altior-portal2.onrender.com -- a foreign-origin page, or an
+          about:blank window that inherited a foreign origin, physically
+          cannot do it.
 
-async function handleRequest(event) {
-    await scramjet.loadConfig();
-    if (scramjet.route(event)) {
-        return scramjet.fetch(event);
-    }
-    return fetch(event.request);
-}
+          The spec detail that saves us: window.open() makes a popup whose
+          initial about:blank inherits the origin of the FRAME THAT CALLED IT,
+          not the top page. So we load the render-origin opener.html inside a
+          small launcher iframe below. When the user clicks the button (which
+          lives inside that render-origin iframe), opener.html runs ON the
+          render origin and:
+            1. registers the service worker, then
+            2. window.open('about:blank') -- the popup inherits the RENDER
+               origin -- and writes the portal's RAW HTML into it.
 
-self.addEventListener("fetch", (event) => {
-    event.respondWith(handleRequest(event));
-});
-`;
-
-        document.getElementById('open-portal-btn').addEventListener('click', async () => {
-            // Register the service worker HERE, on the real origin. An about:blank
-            // window cannot register a SW itself, but it inherits this page's
-            // origin, active SW and base URL, so scramjet's relative frame URLs
-            // (/scramjet/...) and the SW interception both resolve against the
-            // real origin.
-            if ('serviceWorker' in navigator) {
-                try {
-                    await navigator.serviceWorker.register(`/get-dynamic-sw.js?code=${encodeURIComponent(swCode)}`);
-                    await navigator.serviceWorker.ready;
-                } catch (err) {
-                    console.error('Service Worker registration failed:', err);
-                }
-            }
-
-            const popupWin = window.open('about:blank', '_blank');
-
-            if (!popupWin) {
-                alert('Popup blocked! Please allow popups for this site.');
-                return;
-            }
-
-            // cache-bust so we always get the latest index.html, not a copy
-            // cached by GitHub's CDN / the browser HTTP cache (~5 min TTL).
-            const content = await fetch(`https://raw.githubusercontent.com/ltorl/altior-portal2/refs/heads/main/scramjet/index.html?_=${Date.now()}`, { cache: 'no-store' }).then(r => r.text());
-
-            popupWin.document.open();
-            popupWin.document.write(content);
-            popupWin.document.close();
-        });
-    </script>
+          Result: the actual browsing happens in a cloaked, top-level
+          about:blank window containing the raw portal HTML, with a working
+          SW and correctly-resolving /scramjet/... URLs. The iframe here is
+          only a launcher button; it never holds the portal or the proxied
+          pages.
+    -->
+    <iframe
+        src="https://altior-portal2.onrender.com/opener.html"
+        referrerpolicy="no-referrer">
+    </iframe>
 
 </body>
 </html>
