@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; }
+    </style>
+</head>
+<body>
+
+    <button id="open-portal-btn" style='width: 100%; height: 100%'>Open Portal</button>
+
+    <script>
+        // CROSS-ORIGIN opener.
+        //
+        // Unlike opener.html, this file does NOT need to be hosted on
+        // altior-portal2.onrender.com. It can be served from any origin
+        // (a different domain, a local file, a school site, etc.).
+        //
+        // Why this differs from opener.html:
+        //   opener.html opens about:blank and injects the portal's raw HTML.
+        //   That only works when the opener is ALREADY on the render origin,
+        //   because the about:blank window inherits the opener's origin and
+        //   service worker, and scramjet's relative /scramjet/... URLs and the
+        //   SW registration both resolve against that inherited origin.
+        //
+        //   From a DIFFERENT origin that trick fails: the about:blank window
+        //   would inherit the wrong origin, it cannot register a service worker
+        //   on altior-portal2, and the relative URLs would point at the wrong
+        //   host.
+        //
+        // The fix: open about:blank purely to cloak the address bar, then fill
+        // it with a full-window iframe whose src is the REAL portal on the
+        // render origin. The iframe is same-origin to altior-portal2, so it
+        // registers its own service worker and runs scramjet normally on its
+        // home origin. Nothing here depends on where this file is hosted.
+
+        const PORTAL_URL = 'https://altior-portal2.onrender.com/';
+
+        document.getElementById('open-portal-btn').addEventListener('click', () => {
+            const popupWin = window.open('about:blank', '_blank');
+
+            if (!popupWin) {
+                alert('Popup blocked! Please allow popups for this site.');
+                return;
+            }
+
+            // Strip default margins so the iframe truly fills the window.
+            popupWin.document.open();
+            popupWin.document.write(`<!DOCTYPE html>
+<html>
+<head>
+<title>New Tab</title>
+<style>html,body{margin:0;padding:0;height:100%;overflow:hidden}iframe{border:0;width:100%;height:100%;display:block}</style>
+</head>
+<body>
+<iframe src="${PORTAL_URL}" allow="cross-origin-isolated; clipboard-read; clipboard-write; fullscreen"></iframe>
+</body>
+</html>`);
+            popupWin.document.close();
+        });
+    </script>
+
+</body>
+</html>
